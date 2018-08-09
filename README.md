@@ -18,6 +18,8 @@ For my doctoral dissertation, I received a list of homicide cases from [Justin F
 
 The information on the _Community Statistical Areas_ (CSA) came from the [Baltimore Neighborhood Indicators Alliance](http://bniajfi.org). BNIA collects and cleans data about Baltimore every year. For this project, I've used their _Vital Signs 16_ data, which you can explore too by [clicking here](https://bniajfi.org/vital_signs/). I obtained the **percent of households under the poverty level** by (CSA).
 
+All of the data and code that you need for this project are in the [project's depository](https://github.com/RFNajera/baltimore-homicide-inequality). The [R code](baltimore-homicide-inequality/Concentration Curve.R) has within it all the commenting you'll need to understand what is happening with each line of code, as well as the questions that we will be answering below.
+
 ## The Main Aim of This Project
 
 The main aim of this project is to give Public Health professionals a primer on using R programming to determine if a health indicator (homicides, in this case) is equitably distributed in a location (Baltimore) according to that location's indicator of wealth (percent of households under the poverty level, in this case).
