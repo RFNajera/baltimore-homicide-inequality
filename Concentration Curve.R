@@ -18,7 +18,10 @@ setwd("~/Dropbox/RProjects/baltimore-homicide-inequality") #This may need to be 
 homicides_all <- read.csv("baltimore_homicides_2005_2017.csv")
 
 #Subset only the homicides in 2016
-homicides_2016 <- homicides_all %>% filter(year==2006)
+homicides_2016 <- homicides_all %>% filter(year==2016)
+
+# Save this subset as a .csv file if you want to use it later
+write.csv(homicides_2016, file = "baltimore_homicides_2016.csv")
 
 #################################################################
 # Pop quiz #1: How many total homicides were reported in 2016?  #
@@ -65,6 +68,9 @@ csa_info[is.na(csa_info)] <- 0  # Some of the CSAs did not have homicides. So we
 
 #Calculate the homicide rate per 100,000 residents
 csa_info$homicide_rate <- csa_info$total / (csa_info$pop/100000)
+
+# Save this for later use as a .csv
+write.csv(csa_info, file = "baltimore_homicides_2016_with_counts.csv")
 
 #######################################################################
 # Pop quiz #3: Which CSA had the highest rate of homicides in 2016?   #
@@ -123,6 +129,9 @@ baltimore_poverty <- baltimore_poverty +
 # Now, let's look at the map
 baltimore_poverty
 
+# Save the map so you can use it in a document, or edit it with a graphics editing software
+ggsave("baltimore_poverty_choropleth.png")
+
 # Choropleth of homicide rate in 2016 by CSA
 # Just like the choropleth above, but with homicide rate as the filler.
 baltimore_hr <- ggmap(baltimore_roadmap)
@@ -159,6 +168,9 @@ baltimore_hr <- baltimore_hr +
 
 # Now, look at the homicide rate map
 baltimore_hr
+
+# Save the map so you can use it in a document, or edit it with a graphics editing software
+ggsave("baltimore_homicide_rate_choropleth.png")
 
 # Now, look at the two maps side-by-side
 grid.arrange(baltimore_pov, baltimore_hr, nrow = 1)
@@ -249,6 +261,9 @@ ggplot(data=csa_info_ranked,
         panel.border = element_blank(),
         panel.background = element_blank())
 
+# Save the concentration curve so you can use it in a document, or edit it with a graphics editing software
+ggsave("baltimore_inequality_curve.png")
+
 #################################################################
 # Pop quiz #5: Are homicides distributed equitably in Baltimore?#
 #################################################################
@@ -263,6 +278,16 @@ ggplot(data=csa_info_ranked,
 # Pop quiz #7: What percent of the total homicides in 2016 did  #
 # the wealthiest 20 CSAs have in 2016?                          #
 #################################################################
+
+#############################################################################################
+# Final Thoughts: There is a process to figure out the Gini Coefficient (range 0 to 1).     #
+# If homicides were equitably distributed, the Gini Coefficient would be 0. Clearly,        #
+# the Gini Coefficient here is not 0. There are packages in R that can calculate it for you,#
+# but it helps you understand code and how this curve works if you do it on your own. You   #
+# would do this by calculating the area between the dashed line and the red curve. Then you #
+# divide that area by 0.5, which is the area of the graph above (or below) the dashed line. #
+# Maybe you can do it in R when you master it?                                              #
+#############################################################################################
 
 # That's it! You are free to use this code to look at other inequalities.
 # Just remember to give proper attribution to your sources, especially the data sources.
