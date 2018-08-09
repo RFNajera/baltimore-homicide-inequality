@@ -1,4 +1,4 @@
-# baltimore-homicide-inequality
+# Baltimore Homicide Inequality
 A project to understand the inequalities in poverty and homicide in Baltimore in 2016 using Open Source data.
 
 There is evidence that poverty and violence go hand-in-hand for a number of reasons. Those who are poor
