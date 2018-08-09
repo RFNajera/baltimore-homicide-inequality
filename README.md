@@ -10,7 +10,7 @@ Indicators Alliance (http://bniajfi.org) and see if homicides were inequitably d
 This is work that Public Health professionals can reproduce in their own locals (or even in Baltimore)
 using their own data and looking at other social and health indicators.
 
-For more information, please feel free to contact me via Twitter: @EpiRen
+For more information, please feel free to contact me via Twitter: [@EpiRen](http://twitter.com/epiren)
 
 ## Data Sources
 
