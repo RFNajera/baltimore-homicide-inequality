@@ -26,4 +26,18 @@ The main aim of this project is to give Public Health professionals a primer on 
 
 ## Step One: Are Homicides and Poverty Distributed in a Spatially Similar Way in Baltimore?
 
-To be continued...
+For this first part, we bring in all the data of homicides from 2005 to 2017. I've already geocoded these data. If it only had street addresses (at the block level) of homicides, they would need to be geocoded into latitude-longitude coordinates. But that's for a different project at a different time. What is also included in the dataset are the names of the Community Statistical Areas (CSA) they belong to. CSAs are a way to bring together neighborhoods into bigger areas while maintaining as much as possible of the neighborhoods' geographic and sociodemographic characteristics.
+
+```
+# Read the homicides between 2005 and 2017 into a dataframe. Since we're using 2016 CSA data, we'll only use 2016 homicides.
+# The data we will use was obtained from The Baltimore Sun and cleaned up by the author for work in his doctoral (DrPH) dissertation.
+homicides_all <- read.csv("data/baltimore_homicides_2005_2017.csv")
+
+#Subset only the homicides in 2016
+library(tidyr)
+library(dplyr)
+homicides_2016 <- homicides_all %>% filter(year==2016)
+
+# Save this subset as a .csv file if you want to use it later
+write.csv(homicides_2016, file = "data/baltimore_homicides_2016.csv")
+```
