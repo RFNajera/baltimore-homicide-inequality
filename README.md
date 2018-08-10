@@ -1,3 +1,5 @@
+title: Analysis of Public Health Inequalities Using R
+
 # Baltimore Homicide Inequality
 
 There is evidence that [poverty and violence go hand-in-hand](http://www.apa.org/pi/ses/resources/publications/violence.aspx) for a number of reasons. Those who are poor
