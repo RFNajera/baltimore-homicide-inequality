@@ -168,8 +168,7 @@ ggsave("images/baltimore_poverty_choropleth.png")
 ```
 Your result should look like this:
 
-![Poverty Choropleth](/baltimore_poverty_choropleth.png)
-Format: ![Choropleth map of Baltimore showing the CSAs in different shades according to their level of poverty]()
+![Choropleth Map of Baltimore](/images/baltimore_poverty_choropleth.png "Poverty Choropleth")
 
 
 ### Other ways to map?
