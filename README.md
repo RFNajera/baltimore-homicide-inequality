@@ -42,9 +42,9 @@ homicides_2016 <- homicides_all %>% filter(year==2016)
 write.csv(homicides_2016, file = "data/baltimore_homicides_2016.csv")
 ```
 ### Question 1
-**How many homicides were reported in 2016?
+**How many homicides were reported in 2016?**
 
-Now we're ready to bring in a shapefile from BNIA which contains the shape of the CSAs in Baltimore for mapping purposes as well as other information on the CSAs, like population, percent of households under the poverty line, etc... All data we'll use.
+Now we're ready to bring in a shapefile from BNIA which contains the shape of the CSAs in Baltimore for mapping purposes.
 
 ```r
 # Bring in shapefile with population data obtained from the
@@ -77,5 +77,100 @@ homicides_csa <- homicides_2016 %>%
   summarise(total=n()) # "total" will be the total number of shootings per CSA.
 ```
 ### Question 2
-*** Which CSA had the highest number of homicides reported in 2016?
+**Which CSA had the highest number of homicides reported in 2016?**
 
+Now, we're going to bring in BNIA data on population and percent of households under the poverty line. We will then join that information with the homicide counts we just created. We then save the data for later use.
+
+```r
+# Add the population and percent of households under poverty level to the information by CSA.
+#These data also from BNIA at https://bniajfi.org/vital_signs/data_downloads/
+
+bnia_demo <- read.csv("data/bnia_demographics_2016.csv") # Reads the data
+
+csa_info <- left_join(bnia_demo,
+                      homicides_csa, 
+                      by = "CSA2010", 
+                      type = "right") # Joins the data to the homicide per CSA table. There will be some NAs because some CSAs did not have homicides.
+
+csa_info[is.na(csa_info)] <- 0  # Some of the CSAs did not have homicides. So we need to turn those into zeroes. 
+                                # It prevent's NAs in the next step, calculating the homicide rate.
+
+#Calculate the homicide rate per 100,000 residents
+csa_info$homicide_rate <- csa_info$total / (csa_info$pop/100000)
+
+# Save this for later use as a .csv
+write.csv(csa_info, file = "data/baltimore_homicides_2016_with_counts.csv")
+```
+
+### Question 3
+**Which CSA had the highest homicide rate per 100,000 residents reported in 2016?**
+
+### Making a Choropleth Map
+
+You've probably seen choropleth maps before. They're those maps where the shading of a geographic unit (e.g. a US State) depends on the value of some variable (e.g. Population). For this exercise, we're going to make two choropleth maps: One showing the percent of households under the poverty level by CSA in Baltimore (based off the _Vital Signs 16_ data), and one showing the homicide rate per 100,000 residents we just calculated above from the homicide data and the population per CSA from BNIA.
+
+For this, we will join the homicide counts, rates, and percent poverty to the CSA shapefile, then make the map using [ggmap](https://blog.dominodatalab.com/geographic-visualization-with-rs-ggmaps/). Look at the code that customizes the map. The neat thing about doing this in code is that **you don't have to remember which buttons you clicked if you want to reproduce your work**. If you use a graphic user interface (GUI), or point-and-click, you might forget how you did something. Here, it's all in code, with comments and such, ready for you to plug in your data, tweak a few things in the code to fit your needs, and output something you can use.
+
+```r
+# Join CSA info (the counts of homicides, homicide rate, etc.) to CSA polygon
+csa_baltimore2 <- merge(x = csa_baltimore, y = csa_info, by.x = "id", by.y = "CSA2010", all.x = TRUE)
+
+# Choropleth of poverty
+
+library(scales) # For the palette and pretty breaks
+library(ggmap) # For the map
+baltimore_roadmap <- get_map("Baltimore", 
+                             zoom = 12,
+                             maptype = c("toner"),
+                         source = "stamen")
+baltimore_poverty <- ggmap(baltimore_roadmap)
+baltimore_poverty <- baltimore_poverty +
+  geom_polygon(aes(x=long, 
+                   y=lat, 
+                   group=group, 
+                   fill = poverty),
+               size=.3, 
+               color='black', 
+               data=csa_baltimore2,
+               alpha=0.8) +
+  scale_fill_distiller(type="seq", 
+                       palette = "PuOr",  # Gives a nice scale, but it is customizable: 
+                       breaks=pretty_breaks(n=5), 
+                       name="% of Households Under Poverty", 
+                       na.value = "transparent") +  # There should not be any NAs, right?
+  labs(x=NULL, 
+       y=NULL,
+       title="Percent of Households Under the Poverty Level by Community Statistical Area in Baltimore", # Remember to use a descriptive title
+       subtitle=NULL,
+       caption="Source: bnia.org") +
+  theme(plot.title = element_text(face="bold", 
+                                  family="Arial", 
+                                  size=8)) +
+  theme(plot.caption = element_text(face="bold", 
+                                    family="Arial", 
+                                    size=7, 
+                                    color="gray", 
+                                    margin=margin(t=10, r=80))) +
+  theme(legend.position="right") +
+  theme(axis.line =  element_blank(), #Eliminates the plot axes and labels
+        axis.text =  element_blank(),
+        axis.ticks =  element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+
+# Now, let's look at the map
+baltimore_poverty
+
+# Save the map so you can use it in a document, or edit it with a graphics editing software
+ggsave("images/baltimore_poverty_choropleth.png")
+```
+Your result should look like this:
+
+![Poverty Choropleth](/baltimore_poverty_choropleth.png)
+Format: ![Choropleth map of Baltimore showing the CSAs in different shades according to their level of poverty]()
+
+
+### Other ways to map?
+Yes, there are other ways to create a map in R, but this is a very "robust" way that allows you a lot of customization. Another package is [Leaflet](https://andrewbtran.github.io/NICAR/2017/maps/leaflet-r.html) , but we will leave that for another project at a later time.
