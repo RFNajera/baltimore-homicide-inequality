@@ -41,3 +41,41 @@ homicides_2016 <- homicides_all %>% filter(year==2016)
 # Save this subset as a .csv file if you want to use it later
 write.csv(homicides_2016, file = "data/baltimore_homicides_2016.csv")
 ```
+### Question 1
+**How many homicides were reported in 2016?
+
+Now we're ready to bring in a shapefile from BNIA which contains the shape of the CSAs in Baltimore for mapping purposes as well as other information on the CSAs, like population, percent of households under the poverty line, etc... All data we'll use.
+
+```r
+# Bring in shapefile with population data obtained from the
+# Baltimore Neighborhood Indicators Alliance at https://bniajfi.org/vital_signs/data_downloads/
+library(rgdal)
+ogrInfo(dsn="data/bnia_16", 
+        layer="bnia_16") # see shapefile info
+csa_baltimore <- readOGR("data/bnia_16",
+                         "bnia_16") # read the shapefile into R
+csa_baltimore <- spTransform(csa_baltimore, 
+                             CRS("+init=epsg:4326")) # transform coord system: More projections information http://trac.osgeo.org/proj/wiki/GenParms
+```
+
+Because R needs to deal with this as a dataframe, we transform the shapefile into a dataframe.
+
+```r
+# Tranform the shapefile into a dataframe, keep the CSA name information
+library(ggplot2)
+csa_baltimore <- fortify(csa_baltimore, 
+                         region = "CSA2010") # "id" is the name of the CSA column
+```
+
+Now we get the total number of homicides per CSA
+
+```r
+
+# Summarize number of homicides by CSA and place that into a total column
+homicides_csa <- homicides_2016 %>%
+  group_by(CSA2010) %>%
+  summarise(total=n()) # "total" will be the total number of shootings per CSA.
+```
+### Question 2
+*** Which CSA had the highest number of homicides reported in 2016?
+
