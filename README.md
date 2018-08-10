@@ -168,7 +168,7 @@ ggsave("images/baltimore_poverty_choropleth.png")
 ```
 Your result should look like this:
 
-![Choropleth Map of Poverty in Baltimore](/images/baltimore_poverty_choropleth.png "Poverty Choropleth")
+![Choropleth Map of Poverty in Baltimore](https://raw.githubusercontent.com/RFNajera/baltimore-homicide-inequality/master/images/baltimore_poverty_choropleth.png "Poverty Choropleth")
 
 ### Other ways to map?
 Yes, there are other ways to create a map in R, but this is a very "robust" way that allows you a lot of customization. Another package is [Leaflet](https://andrewbtran.github.io/NICAR/2017/maps/leaflet-r.html) , but we will leave that for another project at a later time.
@@ -218,7 +218,7 @@ ggsave("images/baltimore_homicide_rate_choropleth.png")
 ```
 Your homicide rate choropleth should look like this:
 
-![Choropleth Map of Homicide Rate in Baltimore](/images/baltimore_homicide_rate_choropleth.png "Homicide Rate Choropleth")
+![Choropleth Map of Homicide Rate in Baltimore](https://raw.githubusercontent.com/RFNajera/baltimore-homicide-inequality/master/images/baltimore_homicide_rate_choropleth.png "Homicide Rate Choropleth")
 
 The next few lines of code will show you the maps side-by-side.
 
