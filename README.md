@@ -168,7 +168,7 @@ ggsave("images/baltimore_poverty_choropleth.png")
 ```
 Your result should look like this:
 
-![Choropleth Map of Poverty in Baltimore](/images/baltimore_poverty_choropleth.png "Poverty Choropleth")<!-- .element height="50%" width="50%" -->
+![Choropleth Map of Poverty in Baltimore](/images/baltimore_poverty_choropleth.png "Poverty Choropleth")
 
 ### Other ways to map?
 Yes, there are other ways to create a map in R, but this is a very "robust" way that allows you a lot of customization. Another package is [Leaflet](https://andrewbtran.github.io/NICAR/2017/maps/leaflet-r.html) , but we will leave that for another project at a later time.
@@ -218,7 +218,7 @@ ggsave("images/baltimore_homicide_rate_choropleth.png")
 ```
 Your homicide rate choropleth should look like this:
 
-![Choropleth Map of Homicide Rate in Baltimore](/images/baltimore_homicide_rate_choropleth.png "Homicide Rate Choropleth")<!-- .element height="50%" width="50%" -->
+![Choropleth Map of Homicide Rate in Baltimore](/images/baltimore_homicide_rate_choropleth.png "Homicide Rate Choropleth")
 
 The next few lines of code will show you the maps side-by-side.
 
@@ -337,3 +337,21 @@ con_curve
 ggsave("images/baltimore_inequality_curve.png")
 ```
 
+So what does the curve tell you? Can you answer the questions below?
+
+### Question 5
+**Are homicides distributed equitably in Baltimore?**
+
+### Question 6
+**How many CSAs had 50% of the homicides in 2016?**
+
+### Question 7
+**What percent of the total homicides in 2016 did the wealthiest 20 CSAs have in 2016?**
+
+## Final Thoughts
+
+There is a process to figure out the Gini Coefficient (range 0 to 1). If homicides were equitably distributed, the Gini Coefficient would be 0. Clearly, the Gini Coefficient here is not 0. There are packages in R that can calculate it for you, but it helps you understand code and how this curve works if you do it on your own. You would do this by calculating the area between the dashed line and the red curve. Then you divide that area by 0.5, which is the area of the graph above (or below) the dashed line. You would then use the Gini Coefficient to track movement of the inequality line and understand equitability of a health condition based on an indicator over time. In our example, if the Gini Coefficient got smaller over time, then it would indicate that homicides are becoming more equitably distributed in Baltimore. (This is not necessarily a good thing. It could be that there are **more** homicides in wealthier neighborhoods.)
+
+That is all for this project. Please feel free to use the code for your own needs, but do cite your data sources and give me a shout-out to let me know how you're using it.
+
+Thank you for your time.
