@@ -168,7 +168,7 @@ ggsave("images/baltimore_poverty_choropleth.png")
 ```
 Your result should look like this:
 
-![Choropleth Map of Baltimore](/images/baltimore_poverty_choropleth.png "Poverty Choropleth"){:height="50%" width="50%"}
+![Choropleth Map of Baltimore](/images/baltimore_poverty_choropleth.png "Poverty Choropleth")<!-- .element height="50%" width="50%" -->
 
 
 ### Other ways to map?
