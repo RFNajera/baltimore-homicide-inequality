@@ -300,7 +300,7 @@ ggsave("images/baltimore_inequality_curve.png")
 # but it helps you understand code and how this curve works if you do it on your own. You   #
 # would do this by calculating the area between the dashed line and the red curve. Then you #
 # divide that area by 0.5, which is the area of the graph above (or below) the dashed line. #
-# Maybe you can do it in R when you master it?                                              #
+# Maybe you can do it in R?                                                                 #
 #############################################################################################
 
 # That's it! You are free to use this code to look at other inequalities.
