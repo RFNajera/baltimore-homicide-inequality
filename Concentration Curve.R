@@ -139,10 +139,10 @@ baltimore_hr <- baltimore_hr +
   geom_polygon(aes(x=long, 
                    y=lat, 
                    group=group, 
-                   fill = homicide_rate), 
+                   fill = homicide_rate), # Fill by "homicide_rate" instead of "poverty"
                size=.3, 
                color='black', 
-               data=csa_baltimore2, 
+               data=csa_baltimore2, # Same data as the choropleth for poverty
                alpha=0.8) +
   scale_fill_distiller(type="seq", 
                        palette = "PuOr", 
@@ -219,8 +219,6 @@ csa_info_ranked$cum_hompct <- csa_info_ranked$cum_hom / sum(csa_info_ranked$tota
 # Generate the valures if all things were equal, to plot the line of equality
 csa_info_ranked$equality <- sum(csa_info_ranked$total) / 55 / 319 # There are 55 CSAs, divide by 100 to turn to percentage (decimal). Why the 319?
 csa_info_ranked$equality_line <- cumsum(csa_info_ranked$equality)
-
-# Plot "CSA2010" on the X axis and "cum_hompct" on the Y axis. What does this tell you?
 
 # Using ggplot() to make the concentration curve
 csas <- csa_info_ranked$CSA2010
