@@ -1,6 +1,4 @@
-title: Analysis of Public Health Inequalities Using R
-
-# Poverty and Violence
+## Poverty and Violence
 
 There is evidence that [poverty and violence go hand-in-hand](http://www.apa.org/pi/ses/resources/publications/violence.aspx) for a number of reasons. Those who are poor
 may come into friction with those who are not. Or the lack of wealth is systemic, learing to a poor public
