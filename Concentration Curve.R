@@ -1,20 +1,27 @@
 # Homicide Concentration Curve in Baltimore
 # Rene F. Najera, DrPH
+##########################################################################
 
 # Set the working directory
-setwd("~/Dropbox/RProjects/baltimore-homicide-inequality") #This may need to be changed if working on another machine
+setwd("~/Dropbox/RProjects/baltimore-homicide-inequality")
 
 # Install Packages as necessary
 # Libraries as necessary
 
-#######################################################################    PART ONE    ########################################################################
-# In this first part, we will look at homicides in Baltimore in 2016 and see if poverty is in any way associated with                                         #
-# the number of homicides seen per Community Statistical Area. (Read more about CSAs: http://www.prattlibrary.org/research/tools/index.aspx?cat=104&id=4909)  #
-# In the second part, we'll visualize how homicides in Baltimore are not equitably distributed.                                                               #
-###############################################################################################################################################################
+################################ PART ONE #################################
+# In this first part, we will look at homicides in Baltimore in 2016 and  #
+# see if poverty is in any way associated with the number of homicides    #
+# seen per Community Statistical Area.                                    #
+# (Read more about CSAs:                                                  #
+# http://www.prattlibrary.org/research/tools/index.aspx?cat=104&id=4909)  #
+# In the second part, we'll visualize how homicides in Baltimore are not  #
+# equitably distributed.                                                  #
+###########################################################################
 
-# Read the homicides between 2005 and 2017 into a dataframe. Since we're using 2016 CSA data, we'll only use 2016 homicides.
-# The data we will use was obtained from The Baltimore Sun and cleaned up by the author for work in his doctoral (DrPH) dissertation.
+# Read the homicides between 2005 and 2017 into a dataframe.
+# Since we're using 2016 CSA data, we'll only use 2016 homicides.
+# The data we will use was obtained from The Baltimore Sun and
+# cleaned up by the author for work in his doctoral (DrPH) dissertation.
 homicides_all <- read.csv("data/baltimore_homicides_2005_2017.csv")
 
 #Subset only the homicides in 2016
@@ -30,14 +37,16 @@ write.csv(homicides_2016, file = "data/baltimore_homicides_2016.csv")
 #################################################################
 
 # Bring in shapefile with population data obtained from the
-# Baltimore Neighborhood Indicators Alliance at https://bniajfi.org/vital_signs/data_downloads/
+# Baltimore Neighborhood Indicators Alliance at:
+# https://bniajfi.org/vital_signs/data_downloads/
 library(rgdal)
 ogrInfo(dsn="data/bnia_16", 
         layer="bnia_16") # see shapefile info
 csa_baltimore <- readOGR("data/bnia_16",
                          "bnia_16") # read the shapefile into R
 csa_baltimore <- spTransform(csa_baltimore, 
-                             CRS("+init=epsg:4326")) # transform coord system: More projections information http://trac.osgeo.org/proj/wiki/GenParms 
+                             CRS("+init=epsg:4326"))  #transform coord system:
+# More projections information: http://trac.osgeo.org/proj/wiki/GenParms 
 
 # Tranform the shapefile into a dataframe, keep the CSA name information
 library(ggplot2)
@@ -53,7 +62,8 @@ homicides_csa <- homicides_2016 %>%
 # Pop quiz #2: Which CSA had the highest number of homicides?   #
 #################################################################
 
-# Add the population and percent of households under poverty level to the information by CSA.
+# Add the population and percent of households under poverty level
+# to the information by CSA.
 #These data also from BNIA at https://bniajfi.org/vital_signs/data_downloads/
 
 bnia_demo <- read.csv("data/bnia_demographics_2016.csv") # Reads the data
@@ -61,10 +71,12 @@ bnia_demo <- read.csv("data/bnia_demographics_2016.csv") # Reads the data
 csa_info <- left_join(bnia_demo,
                       homicides_csa, 
                       by = "CSA2010", 
-                      type = "right") # Joins the data to the homicide per CSA table. There will be some NAs because some CSAs did not have homicides.
+                      type = "right") # Joins the data to the homicide per CSA table.
+                                      # There will be some NAs because some CSAs did not have homicides.
 
-csa_info[is.na(csa_info)] <- 0  # Some of the CSAs did not have homicides. So we need to turn those into zeroes. 
-                                # It prevent's NAs in the next step, calculating the homicide rate.
+# Some of the CSAs did not have homicides.So we need to turn those into zeroes. 
+# It prevent's NAs in the next step, calculating the homicide rate.
+csa_info[is.na(csa_info)] <- 0  
 
 #Calculate the homicide rate per 100,000 residents
 csa_info$homicide_rate <- csa_info$total / (csa_info$pop/100000)
@@ -76,10 +88,15 @@ write.csv(csa_info, file = "data/baltimore_homicides_2016_with_counts.csv")
 # Pop quiz #3: Which CSA had the highest rate of homicides in 2016?   #
 #######################################################################
 
-# Let's make a choropleth map of poverty first. (Learn more about choropleth maps: https://datavizcatalogue.com/methods/choropleth.html)
+# Let's make a choropleth map of poverty first.
+# (Learn more about choropleth maps: https://datavizcatalogue.com/methods/choropleth.html)
 
 # Join CSA info (the counts of homicides, homicide rate, etc.) to CSA polygon
-csa_baltimore2 <- merge(x = csa_baltimore, y = csa_info, by.x = "id", by.y = "CSA2010", all.x = TRUE)
+csa_baltimore2 <- merge(x = csa_baltimore, 
+                        y = csa_info, 
+                        by.x = "id", 
+                        by.y = "CSA2010", 
+                        all.x = TRUE)
 
 # Choropleth of poverty
 
@@ -100,13 +117,14 @@ baltimore_poverty <- baltimore_poverty +
                data=csa_baltimore2,
                alpha=0.8) +
   scale_fill_distiller(type="seq", 
-                       palette = "PuOr",  # Gives a nice scale, but it is customizable: 
+                       palette = "PuOr",  # Gives a nice scale. 
                        breaks=pretty_breaks(n=5), 
                        name="% of Households Under Poverty", 
                        na.value = "transparent") +  # There should not be any NAs, right?
   labs(x=NULL, 
        y=NULL,
-       title="Percent of Households Under the Poverty Level by Community Statistical Area in Baltimore", # Remember to use a descriptive title
+       # Remember to use a descriptive title
+       title="Percent of Households Under the Poverty Level by Community Statistical Area in Baltimore",
        subtitle=NULL,
        caption="Source: bnia.org") +
   theme(plot.title = element_text(face="bold", 
@@ -129,7 +147,7 @@ baltimore_poverty <- baltimore_poverty +
 # Now, let's look at the map
 baltimore_poverty
 
-# Save the map so you can use it in a document, or edit it with a graphics editing software
+# Save the map so you can use it later as want
 ggsave("images/baltimore_poverty_choropleth.png")
 
 # Choropleth of homicide rate in 2016 by CSA
@@ -151,7 +169,7 @@ baltimore_hr <- baltimore_hr +
                        na.value = "transparent") +
   labs(x=NULL, 
        y=NULL,
-       title="2016 Homicide Rate by Community Statistical Area in Baltimore", # Remember to use a descriptive title
+       title="2016 Homicide Rate by Community Statistical Area in Baltimore",
        subtitle=NULL,
        caption="Source: René Najera, DrPH & bnia.org") + # Remember to cite your sources
   #geom_text(aes(x=long, y=lat, label=total), data=homtxt, col="black", cex=5) + # Add the label of number of shootings. Will get warning about removing NAs
@@ -169,17 +187,16 @@ baltimore_hr <- baltimore_hr +
 # Now, look at the homicide rate map
 baltimore_hr
 
-# Save the map so you can use it in a document, or edit it with a graphics editing software
+# Save the map so you can use it later
 ggsave("images/baltimore_homicide_rate_choropleth.png")
 
-# Now, arrange the two maps side-by-side (grid.arrange: https://cran.r-project.org/web/packages/egg/vignettes/Ecosystem.html)
-library(gridExtra)
-grid.arrange(baltimore_poverty, baltimore_hr, nrow = 2)
 
-#Save it to a file.
-g <- arrangeGrob(baltimore_poverty, baltimore_hr, nrow=2) # Generates g
-ggsave(file="images/baltimore_maps_side_by_side.png", g) # Saves g
-dev.off()
+# Save the side-by-side to a file for viewing later, or editing, etc.
+install.packages("devtools")
+devtools::install_github("thomasp85/patchwork") # More on patchwork: https://github.com/thomasp85/patchwork
+library(patchwork)
+baltimore_poverty / baltimore_hr
+ggsave("images/baltimore_maps_side_by_side.png")
 
 ######################################################################################
 # Pop quiz #4: Does there seem to be an association between poverty and homicides?   #
@@ -199,13 +216,16 @@ scatter_plot
 
 ggsave("images/scatterplot.png")
 
-##############################################################    PART TWO    #########################################################################
-# Now, let's look at the inequality. We will do this by ranking the CSAs in order of poverty, from the ones with the most households under poverty... #
-# to the ones with the least. Those will be plotted on the X axis.                                                                                    #
-# Then, the cummulative number of homicides between 2005 and 2017 will be plotted on the Y axis.                                                      #
-# If all CSAs shared the same number of homicides, the line would be a 45-degree line from the X-Y intercept.                                         #
-# (There are packages in R that will do this for you almost automatically, but this is good practice to see how it is done.)                          #
-#######################################################################################################################################################
+##############################    PART TWO    #########################################
+# Now, let's look at the inequality. We will do this by ranking the CSAs in order of  #
+# poverty, from the ones with the most households under poverty to the ones with the  #
+# least. Those will be plotted on the X axis. Then, the cummulative number of         #
+# homicides between 2005 and 2017 will be plotted on the Y axis. If all CSAs shared   #
+# the same number of homicides, the line would be a 45-degree line from the           #
+# X-Y intercept.                                                                      #
+# (There are packages in R that will do this for you almost automatically,            #
+# but this is good practice to see how it is done.)                                   #
+#######################################################################################
 
 # Rank CSAs in csa_info by "poverty" in descending order, poorest to wealthiest
 csa_info_ranked <- csa_info[order(-csa_info$poverty),] 
@@ -217,12 +237,17 @@ csa_info_ranked$cum_hom <- cumsum(csa_info_ranked$total)
 csa_info_ranked$cum_hompct <- csa_info_ranked$cum_hom / sum(csa_info_ranked$total)
 
 # Generate the valures if all things were equal, to plot the line of equality
-csa_info_ranked$equality <- sum(csa_info_ranked$total) / 55 / 319 # There are 55 CSAs, divide by 100 to turn to percentage (decimal). Why the 319?
+csa_info_ranked$equality <- sum(csa_info_ranked$total) / 55 / 319
+# There are 55 CSAs, divide by 100 to turn to percentage (decimal). Why the 319?
+
+# Get the cumulative sum of the equality percentage
 csa_info_ranked$equality_line <- cumsum(csa_info_ranked$equality)
 
 # Using ggplot() to make the concentration curve
 csas <- csa_info_ranked$CSA2010
-csa_info_ranked$CSA2010 <- factor(csa_info_ranked$CSA2010,levels = csas) # Need to make the CSAs into the proper levels, otherwise, they're plotted alphabetically
+csa_info_ranked$CSA2010 <- factor(csa_info_ranked$CSA2010,
+                                  levels = csas)  # Need to make the CSAs into the proper levels
+                                                  # otherwise, they're plotted alphabetically
 csa_info_ranked$group <- 1 # ggplot needs observations to be grouped :-/
 
 # Making the curve
