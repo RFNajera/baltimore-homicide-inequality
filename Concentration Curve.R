@@ -172,7 +172,8 @@ baltimore_hr <- baltimore_hr +
        title="2016 Homicide Rate by Community Statistical Area in Baltimore",
        subtitle=NULL,
        caption="Source: René Najera, DrPH & bnia.org") + # Remember to cite your sources
-  #geom_text(aes(x=long, y=lat, label=total), data=homtxt, col="black", cex=5) + # Add the label of number of shootings. Will get warning about removing NAs
+  #geom_text(aes(x=long, y=lat, label=total), data=homtxt, col="black", cex=5) +
+  # Add the label of number of shootings. Will get warning about removing NAs
   theme(plot.title  =element_text(face="bold", family="Arial", size=8)) +
   theme(plot.caption = element_text(face="bold", family="Arial", size=7, color="gray", margin=margin(t=10, r=80))) +
   theme(legend.position="right") +
@@ -190,7 +191,6 @@ baltimore_hr
 # Save the map so you can use it later
 ggsave("images/baltimore_homicide_rate_choropleth.png")
 
-
 # Save the side-by-side to a file for viewing later, or editing, etc.
 install.packages("devtools")
 devtools::install_github("thomasp85/patchwork") # More on patchwork: https://github.com/thomasp85/patchwork
@@ -203,13 +203,18 @@ ggsave("images/baltimore_maps_side_by_side.png")
 ######################################################################################
 
 # Now, a simple scatterplot. What does this tell you?
-# (More on scatter plots using ggplot: http://www.sthda.com/english/wiki/ggplot2-scatter-plots-quick-start-guide-r-software-and-data-visualization)
+# (More on scatter plots using ggplot:
+# http://www.sthda.com/english/wiki/ggplot2-scatter-plots-quick-start-guide-r-software-and-data-visualization)
 scatter_plot <- ggplot(csa_info, aes(x=poverty, y=homicide_rate)) +
-  geom_point(size=2, shape=23, fill = "black") +
-  geom_smooth(method=lm, se=FALSE, color = "blue", linetype = "dashed") + # Adds regression line
-  geom_smooth(method = "loess", formula = "y ~ x", color = "red") + # Adds Loess line
-  labs(title="Scatterplot of Percent Households Under Poverty vs. Homicide Rate",
-       x="% of Households Under Poverty", y = "Homicide Rate per 100,000 Residents")
+  geom_point(shape = 21, size = 2, fill = "blue") +
+  labs(title="Scatterplot of Percent Households Under Poverty \n vs. Homicide Rate",
+      x = "% of Households Under Poverty", 
+      y = "Homicide Rate per 100,000 Residents",
+      caption = "Source: BNIA.org, Data.BaltimoreCity.Gov"
+  ) +
+  geom_smooth(method = lm, se=FALSE, color = "blue", linetype = "dashed") + # Adds regression line
+  geom_smooth(method = "loess", se = FALSE, formula = "y ~ x", color = "black") + # Adds Loess line
+  theme_bw()
 
 # Look at the line
 scatter_plot
