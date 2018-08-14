@@ -16,6 +16,8 @@ The information on the _Community Statistical Areas_ (CSA) came from the [Baltim
 
 All of the data and code that you need for this project are in [the project’s GitHub repository](https://github.com/RFNajera/baltimore-homicide-inequality). The [R code](/Concentration Curve.R) has all the comments you’ll need to understand what is happening in each line of code, as well as the questions that we will be answering below.
 
+Alternatively, you can [download the zip file with all the code and data](https://github.com/RFNajera/baltimore-homicide-inequality/zipball/master).
+
 ## The Main Aim of This Project
 
 The main aim of this project is to give Public Health professionals a primer on using [R programming](https://www.r-project.org/) to determine if a health indicator (homicides, in this case) is equitably distributed in a location (Baltimore) according to that location's indicator of wealth (percent of households under the poverty level, in this case).
