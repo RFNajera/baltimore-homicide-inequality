@@ -22,6 +22,11 @@ Alternatively, you can [download the zip file with all the code and data](https:
 
 The main aim of this project is to give Public Health professionals a primer on using [R programming](https://www.r-project.org/) to determine if a health indicator (homicides, in this case) is equitably distributed in a location (Baltimore) according to that location's indicator of wealth (percent of households under the poverty level, in this case).
 
+## You Might Want to Watch This First
+Here is a quick YouTube video I made of me running the code on RStudio. It's 15 minutes, and you can see how easy it is to look at the code, run it, and the understand what each line did.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zgaNEQ5MC-E" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ## Step One: Are Homicides and Poverty Distributed in a Spatially Similar Way in Baltimore?
 
 For this first part, we bring in all the data of homicides from 2005 to 2017. I've already geocoded these data. If it only had street addresses (at the block level) of homicides, they would need to be geocoded into latitude-longitude coordinates. But that's for a different project at a different time. What is also included in the dataset are the names of the Community Statistical Areas (CSA) they belong to. CSAs are a way to bring together neighborhoods into bigger areas while maintaining as much as possible of the neighborhoods' geographic and sociodemographic characteristics.
